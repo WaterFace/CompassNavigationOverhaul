@@ -63,7 +63,7 @@ namespace extended
 			// Add objectives to the quest data. The objectives are in oldest-to-newest order,
 			// so we iterate from newest-to-oldest to have it in the same order as in the journal
 			for (int i = player->GetPlayerRuntimeData().objectives.size() - 1; i >= 0; i--) {
-				const RE::BGSInstancedQuestObjective& instancedObjective = player->objectives[i];
+				const RE::BGSInstancedQuestObjective& instancedObjective = player->GetPlayerRuntimeData().objectives[i];
 
 				bool objectiveHasTarget = false;
 				for (int j = 0; j < instancedObjective.objective->numTargets; j++) {
