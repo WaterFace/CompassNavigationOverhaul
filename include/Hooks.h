@@ -163,7 +163,7 @@ namespace hooks
 				}
 			};
 
-			utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator());
+			// utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator());
 		}
 
 		// Compass::SetMarkers call to HUDMarkerManager::AddMarker(...) for Player-set marker

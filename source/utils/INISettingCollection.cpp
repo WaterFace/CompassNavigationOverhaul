@@ -31,7 +31,7 @@ namespace utils
 		}
 
 		if (_this()->OpenHandle(false)) {
-			_this()->Unk_09();
+			_this()->ReadAllSettings();
 			_this()->CloseHandle();
 
 			return true;

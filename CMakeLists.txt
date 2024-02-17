@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
-########################################################################################################################
-## Define project
-########################################################################################################################
-
+# #######################################################################################################################
+# # Define project
+# #######################################################################################################################
 project(
 	CompassNavigationOverhaul
 	VERSION 1.0.0
@@ -66,16 +65,16 @@ set(sources
 
 source_group(
 	TREE
-		${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
 	FILES
-		${headers}
-		${sources}
+	${headers}
+	${sources}
 )
 
-########################################################################################################################
-## Configure target DLL
-########################################################################################################################
-
+# #######################################################################################################################
+# # Configure target DLL
+# #######################################################################################################################
+find_package(directxtk CONFIG REQUIRED)
 find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(binary_io REQUIRED CONFIG)
 find_package(spdlog REQUIRED CONFIG)
@@ -86,29 +85,29 @@ add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
 target_include_directories(
 	${PROJECT_NAME}
 	PRIVATE
-		${CMAKE_CURRENT_SOURCE_DIR}/include
+	${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
-		CommonLibSSE::CommonLibSSE
-		spdlog::spdlog
+	CommonLibSSE::CommonLibSSE
+	spdlog::spdlog
 )
 
-if (MSVC)
+if(MSVC)
 	target_link_options(
 		${PROJECT_NAME}
 		PRIVATE
-			"$<$<CONFIG:DEBUG>:/INCREMENTAL;/OPT:NOREF;/OPT:NOICF>"
-			"$<$<CONFIG:RELEASE>:/INCREMENTAL:NO;/OPT:REF;/OPT:ICF>"
+		"$<$<CONFIG:DEBUG>:/INCREMENTAL;/OPT:NOREF;/OPT:NOICF>"
+		"$<$<CONFIG:RELEASE>:/INCREMENTAL:NO;/OPT:REF;/OPT:ICF>"
 	)
 endif()
 
 target_precompile_headers(
 	${PROJECT_NAME}
 	PRIVATE
-		include/PCH.h
+	include/PCH.h
 )
 
 ########################################################################################################################

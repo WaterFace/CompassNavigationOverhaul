@@ -182,8 +182,7 @@ namespace extended
 			compass->UnfocusMarker();
 		}
 
-		if (focusChanged || (settings::questlist::hideInCombat && player->IsWeaponDrawn()))
-		{
+		if (focusChanged || (settings::questlist::hideInCombat && player->AsActorState()->IsWeaponDrawn())) {
 			if (questItemList)
 				questItemList->RemoveAllQuests();
 		}
@@ -204,70 +203,50 @@ namespace extended
 				{
 					canFocusPlayerSetMarker = false;
 
-					compass->SetMarkerInfo(questData->GetTargetText(), focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+					compass->SetFocusedMarkerInfo(questData->GetTargetText(), focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
 
-					if (focusChanged && questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell()))
-					{
-						questItemList->AddQuest(questData->type, questData->name,questData->isInSameLocation, questData->objectives, questData->ageIndex);
+					if (focusChanged && questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell())) {
+						questItemList->AddQuest(questData->type, questData->name, questData->isInSameLocation, questData->objectives, questData->ageIndex);
 						questItemList->SetQuestSide(GetSideInQuest(questData->type));
 					}
-				}
-				else if (auto locationData = std::dynamic_pointer_cast<FocusedMarker::LocationData>(focusedMarkerData))
-				{
-					compass->SetMarkerInfo(locationData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
-				}
-				else if (auto enemyData = std::dynamic_pointer_cast<FocusedMarker::EnemyData>(focusedMarkerData))
-				{
-					compass->SetMarkerInfo(enemyData->enemyName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
-				}
-				else if (auto playerSetData = std::dynamic_pointer_cast<FocusedMarker::PlayerSetData>(focusedMarkerData))
-				{
-					if (canFocusPlayerSetMarker)
-					{
-						compass->SetMarkerInfo(playerSetData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+				} else if (auto locationData = std::dynamic_pointer_cast<FocusedMarker::LocationData>(focusedMarkerData)) {
+					compass->SetFocusedMarkerInfo(locationData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+				} else if (auto enemyData = std::dynamic_pointer_cast<FocusedMarker::EnemyData>(focusedMarkerData)) {
+					compass->SetFocusedMarkerInfo(enemyData->enemyName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+				} else if (auto playerSetData = std::dynamic_pointer_cast<FocusedMarker::PlayerSetData>(focusedMarkerData)) {
+					if (canFocusPlayerSetMarker) {
+						compass->SetFocusedMarkerInfo(playerSetData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
 					}
 				}
 
 				gfxIndex = focusedMarkerData->gfxIndex;
 			}
-			
-			if (focusChanged)
-			{
+
+			if (focusChanged) {
 				compass->FocusMarker(gfxIndex);
-			} 
-			else
-			{
-				compass->UpdateMarker(gfxIndex);
 			}
+			compass->UpdateMarker();
 		}
 
 		// Set smaller the size of non-focused markers
 		compass->SetMarkersSize();
 
-		if (focusedMarker && (!settings::questlist::hideInCombat || !player->IsWeaponDrawn()))
-		{
+		if (focusedMarker && (!settings::questlist::hideInCombat || !player->AsActorState()->IsWeaponDrawn())) {
 			timeFocusingMarker += timeManager->realTimeDelta;
 
-			if (questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell()))
-			{
+			if (questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell())) {
 				float delayToShow;
-				if (player->DoGetMovementSpeed() < player->GetWalkSpeed())
-				{
+				if (player->AsActorState()->DoGetMovementSpeed() < player->GetWalkSpeed()) {
 					delayToShow = settings::questlist::walkingDelayToShow;
-				}
-				else if (player->DoGetMovementSpeed() < player->GetJogSpeed())
-				{
+				} else if (player->AsActorState()->DoGetMovementSpeed() < player->GetJogSpeed()) {
 					delayToShow = settings::questlist::joggingDelayToShow;
-				}
-				else
-				{
+				} else {
 					delayToShow = settings::questlist::sprintingDelayToShow;
 				}
 
-				if (timeFocusingMarker > delayToShow)
-				{
+				if (timeFocusingMarker > delayToShow) {
 					questItemList->ShowAllQuests();
-				}	
+				}
 			}
 		}
 

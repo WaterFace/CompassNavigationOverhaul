@@ -11,8 +11,7 @@ namespace extended
 
 		static void InitSingleton(const GFxDisplayObject& a_originalCompass)
 		{
-			if (!singleton)
-			{
+			if (!singleton) {
 				static Compass singletonInstance{ a_originalCompass };
 				singleton = &singletonInstance;
 			}
@@ -22,10 +21,8 @@ namespace extended
 
 		void SetupMod(const GFxDisplayObject& a_replaceCompass)
 		{
-			if (a_replaceCompass.HasMember("Compass"))
-			{
+			if (a_replaceCompass.HasMember("Compass")) {
 				*static_cast<GFxDisplayObject*>(this) = a_replaceCompass;
-
 				Invoke("Compass");
 			}
 		}
@@ -35,9 +32,9 @@ namespace extended
 			Invoke("SetUnits", a_useMetric);
 		}
 
-		void SetMarkerInfo(const std::string& a_target, float a_distance, float a_heightDifference)
+		void SetFocusedMarkerInfo(const std::string& a_target, float a_distance, float a_heightDifference)
 		{
-			Invoke("SetMarkerInfo", a_target.c_str(), a_distance, a_heightDifference);
+			Invoke("SetFocusedMarkerInfo", a_target.c_str(), a_distance, a_heightDifference);
 		}
 
 		void FocusMarker(std::uint32_t a_markerIndex)
@@ -50,9 +47,9 @@ namespace extended
 			Invoke("UnfocusMarker");
 		}
 
-		void UpdateMarker(std::uint32_t a_markerIndex)
+		void UpdateMarker()
 		{
-			Invoke("UpdateMarker", a_markerIndex);
+			Invoke("UpdateFocusedMarker");
 		}
 
 		void SetMarkersSize()
@@ -61,8 +58,8 @@ namespace extended
 		}
 
 	private:
-
-		Compass(const GFxDisplayObject& a_originalCompass) : GFxDisplayObject{ a_originalCompass }
+		Compass(const GFxDisplayObject& a_originalCompass) :
+			GFxDisplayObject{ a_originalCompass }
 		{}
 
 		static inline Compass* singleton = nullptr;
