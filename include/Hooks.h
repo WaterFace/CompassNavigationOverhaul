@@ -16,14 +16,15 @@ namespace hooks
 		static constexpr REL::RelocationID AddMarkerId = RELOCATION_ID(50851, 51728);
 
 	public:
-
 		static inline REL::Relocation<bool (*)(const RE::HUDMarkerManager*, RE::TESQuest**,
-			RE::BSTArray<RE::TESQuestTarget>*)> UpdateQuests{ UpdateQuestsId };
+			RE::BSTArray<RE::TESQuestTarget>*)>
+			UpdateQuests{ UpdateQuestsId };
 
 		static inline REL::Relocation<bool (*)(const RE::HUDMarkerManager*)> UpdateLocations{ UpdateLocationsId };
 
 		static inline REL::Relocation<bool (*)(const RE::HUDMarkerManager*, RE::HUDMarker::ScaleformData*,
-											   RE::NiPoint3*, const RE::RefHandle&, std::int32_t)> AddMarker{ AddMarkerId };
+			RE::NiPoint3*, const RE::RefHandle&, std::int32_t)>
+			AddMarker{ AddMarkerId };
 	};
 
 	class HUDMenu
@@ -31,7 +32,6 @@ namespace hooks
 		static constexpr REL::RelocationID ProcessMessageId = RELOCATION_ID(50718, 51612);
 
 	public:
-
 		static inline REL::Relocation<RE::UI_MESSAGE_RESULTS (*)(const RE::HUDMenu*, RE::UIMessage&)> ProcessMessage{ ProcessMessageId };
 	};
 
@@ -41,29 +41,28 @@ namespace hooks
 		static constexpr REL::RelocationID UpdateId = RELOCATION_ID(50773, 51668);
 
 	public:
-
 		static inline REL::Relocation<bool (*)(RE::Compass*)> SetMarkers{ SetMarkersId };
 		static inline REL::Relocation<void (*)(RE::Compass*)> Update{ UpdateId };
 	};
 
 	bool UpdateQuests(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame,
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame,
 		RE::TESQuestTarget* a_questTargets);
 
 	RE::TESWorldSpace* AllowedToShowMapMarker(const RE::TESObjectREFR* a_marker);
 
 	bool UpdateLocations(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							   RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
 
 	bool UpdateEnemies(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
 
 	bool UpdatePlayerSetMarker(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-								RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame);
 
-	bool SetCompassMarkers(RE::GFxValue::ObjectInterface* a_objectInterface, void* a_data, 
-						   RE::GFxValue* a_result, const char* a_name, const RE::GFxValue* a_args, 
-						   std::uint32_t a_numArgs, bool a_isDObj);
+	bool SetCompassMarkers(RE::GFxValue::ObjectInterface* a_objectInterface, void* a_data,
+		RE::GFxValue* a_result, const char* a_name, const RE::GFxValue* a_args,
+		std::uint32_t a_numArgs, bool a_isDObj);
 
 	static inline void Install()
 	{
@@ -189,8 +188,7 @@ namespace hooks
 			utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator(hookedAddress));
 
 			// In AE Compass::SetMarkers is inlined in Compass::Update, hook both
-			if (REL::Module::IsAE()) 
-			{
+			if (REL::Module::IsAE()) {
 				static std::uintptr_t hookedAddressAE = Compass::Update.address() + 0xAE;
 
 				utils::WriteBranchTrampoline<5>(hookedAddressAE, HookCodeGenerator(hookedAddressAE));
@@ -220,8 +218,7 @@ namespace hooks
 			utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator(hookedAddress));
 
 			// In AE Compass::SetMarkers is inlined in Compass::Update, hook both
-			if (REL::Module::IsAE()) 
-			{
+			if (REL::Module::IsAE()) {
 				static std::uintptr_t hookedAddressAE = Compass::Update.address() + 0x128;
 
 				utils::WriteBranchTrampoline<5>(hookedAddressAE, HookCodeGenerator(hookedAddressAE));

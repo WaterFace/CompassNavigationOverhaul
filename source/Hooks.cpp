@@ -7,19 +7,18 @@
 namespace hooks
 {
 	bool UpdateQuests(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame,
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame,
 		RE::TESQuestTarget* a_questTarget)
 	{
 		//
 		// The game loops through active quest targets, and calls `AddMarker` for each one.
-		// If multiple targets correspond to the same marker, `AddMarker` returns the 
+		// If multiple targets correspond to the same marker, `AddMarker` returns the
 		// previously-created marker (via `a_refHandle`), so we can iteratively
 		// build the structure containing all the targets, objectives, etc. corresponding
 		// to the marker.
-		// 
+		//
 
-		if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame))
-		{
+		if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) {
 			RE::TESObjectREFR* marker = RE::TESObjectREFR::LookupByHandle(a_refHandle).get();
 
 			RE::PlayerCharacter* player = RE::PlayerCharacter::GetSingleton();
@@ -49,26 +48,23 @@ namespace hooks
 	{
 		RE::TESWorldSpace* markerWorldspace = a_marker->GetWorldspace();
 
-		if (settings::display::showInteriorMarkers)
-		{
+		if (settings::display::showInteriorMarkers) {
 			auto player = RE::PlayerCharacter::GetSingleton();
 
 			RE::TESWorldSpace* playerWorldspace = player->GetWorldspace();
 
-			if (playerWorldspace && markerWorldspace && playerWorldspace != markerWorldspace)
-			{
-				if (!playerWorldspace->parentWorld && markerWorldspace->parentWorld == playerWorldspace) 
-				{
+			if (playerWorldspace && markerWorldspace && playerWorldspace != markerWorldspace) {
+				if (!playerWorldspace->parentWorld && markerWorldspace->parentWorld == playerWorldspace) {
 					return playerWorldspace;
 				}
 			}
 		}
-			
+
 		return markerWorldspace;
 	}
 
 	bool UpdateLocations(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							   RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
 	{
 		RE::TESObjectREFR* marker = RE::TESObjectREFR::LookupByHandle(a_refHandle).get();
 		RE::TESWorldSpace* markerWorldspace = marker->GetWorldspace();
@@ -81,15 +77,12 @@ namespace hooks
 
 		float sqDistanceToMarker = playerRealPos.GetSquaredDistance(markerRealPos);
 
-		if (sqDistanceToMarker < RE::HUDMarkerManager::GetSingleton()->sqRadiusToAddLocation)
-		{
+		if (sqDistanceToMarker < RE::HUDMarkerManager::GetSingleton()->sqRadiusToAddLocation) {
 			auto mapMarker = marker->extraList.GetByType<RE::ExtraMapMarker>();
 
 			// Unvisited markers keep being shown in any case
-			if (settings::display::showUndiscoveredLocationMarkers || mapMarker->mapData->flags.all(RE::MapMarkerData::Flag::kVisible))
-			{
-				if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) 
-				{
+			if (settings::display::showUndiscoveredLocationMarkers || mapMarker->mapData->flags.all(RE::MapMarkerData::Flag::kVisible)) {
+				if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) {
 					extended::HUDMarkerManager::GetSingleton()->ProcessLocationMarker(mapMarker, marker, a_markerGotoFrame);
 
 					return true;
@@ -101,12 +94,10 @@ namespace hooks
 	}
 
 	bool UpdateEnemies(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-							RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
 	{
-		if (settings::display::showEnemyMarkers)
-		{
-			if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) 
-			{
+		if (settings::display::showEnemyMarkers) {
+			if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) {
 				RE::TESObjectREFR* marker = RE::TESObjectREFR::LookupByHandle(a_refHandle).get();
 
 				extended::HUDMarkerManager::GetSingleton()->ProcessEnemyMarker(marker->As<RE::Character>(), a_markerGotoFrame);
@@ -119,10 +110,9 @@ namespace hooks
 	}
 
 	bool UpdatePlayerSetMarker(const RE::HUDMarkerManager* a_hudMarkerManager, RE::HUDMarker::ScaleformData* a_markerData,
-								RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
+		RE::NiPoint3* a_pos, const RE::RefHandle& a_refHandle, std::uint32_t a_markerGotoFrame)
 	{
-		if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) 
-		{
+		if (HUDMarkerManager::AddMarker(a_hudMarkerManager, a_markerData, a_pos, a_refHandle, a_markerGotoFrame)) {
 			RE::TESObjectREFR* marker = RE::TESObjectREFR::LookupByHandle(a_refHandle).get();
 
 			extended::HUDMarkerManager::GetSingleton()->ProcessPlayerSetMarker(marker, a_markerGotoFrame);
@@ -134,11 +124,10 @@ namespace hooks
 	}
 
 	bool SetCompassMarkers(RE::GFxValue::ObjectInterface* a_objectInterface, void* a_data,
-						   RE::GFxValue* a_result, const char* a_name, const RE::GFxValue* a_args,
-						   std::uint32_t a_numArgs, bool a_isDObj)
+		RE::GFxValue* a_result, const char* a_name, const RE::GFxValue* a_args,
+		std::uint32_t a_numArgs, bool a_isDObj)
 	{
-		if (a_objectInterface->Invoke(a_data, a_result, a_name, a_args, a_numArgs, a_isDObj)) 
-		{
+		if (a_objectInterface->Invoke(a_data, a_result, a_name, a_args, a_numArgs, a_isDObj)) {
 			extended::HUDMarkerManager::GetSingleton()->SetMarkersExtraInfo();
 
 			return true;

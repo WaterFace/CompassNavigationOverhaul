@@ -14,8 +14,7 @@ namespace SKSE::log
 
 	inline bool init(const std::string_view& a_log_name)
 	{
-		if (!log_directory())
-		{
+		if (!log_directory()) {
 			return false;
 		}
 

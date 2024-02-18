@@ -12,15 +12,12 @@ namespace settings
 
 		{
 			using namespace debug;
-			iniSettingCollection->AddSettings
-			(
-				MakeSetting("uLogLevel:Debug", static_cast<std::uint32_t>(logLevel))
-			);
+			iniSettingCollection->AddSettings(
+				MakeSetting("uLogLevel:Debug", static_cast<std::uint32_t>(logLevel)));
 		}
 		{
 			using namespace display;
-			iniSettingCollection->AddSettings
-			(
+			iniSettingCollection->AddSettings(
 				MakeSetting("bUseMetricUnits:Display", useMetricUnits),
 				MakeSetting("bShowUndiscoveredLocationMarkers:Display", showUndiscoveredLocationMarkers),
 				MakeSetting("bUndiscoveredMeansUnknownMarkers:Display", undiscoveredMeansUnknownMarkers),
@@ -29,13 +26,11 @@ namespace settings
 				MakeSetting("bShowObjectiveAsTarget:Display", showObjectiveAsTarget),
 				MakeSetting("bShowInteriorMarkers:Display", showInteriorMarkers),
 				MakeSetting("fAngleToShowMarkerDetails:Display", angleToShowMarkerDetails),
-				MakeSetting("fAngleToKeepMarkerDetailsShown:Display", angleToKeepMarkerDetailsShown)
-			);
+				MakeSetting("fAngleToKeepMarkerDetailsShown:Display", angleToKeepMarkerDetailsShown));
 		}
 		{
 			using namespace questlist;
-			iniSettingCollection->AddSettings
-			(
+			iniSettingCollection->AddSettings(
 				MakeSetting("fPositionX:QuestList", positionX),
 				MakeSetting("fPositionY:QuestList", positionY),
 				MakeSetting("fMaxHeight:QuestList", maxHeight),
@@ -44,12 +39,10 @@ namespace settings
 				MakeSetting("fWalkingDelayToShow:QuestList", walkingDelayToShow),
 				MakeSetting("fJoggingDelayToShow:QuestList", joggingDelayToShow),
 				MakeSetting("fSprintingDelayToShow:QuestList", sprintingDelayToShow),
-				MakeSetting("bHideInCombat:QuestList", hideInCombat)
-			);
+				MakeSetting("bHideInCombat:QuestList", hideInCombat));
 		}
 
-		if (!iniSettingCollection->ReadFromFile(a_iniFileName))
-		{
+		if (!iniSettingCollection->ReadFromFile(a_iniFileName)) {
 			logger::warn("Could not read {}, falling back to default options", a_iniFileName);
 		}
 

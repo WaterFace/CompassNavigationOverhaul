@@ -4,8 +4,8 @@
 
 #include "Settings.h"
 
-#include "FocusedMarker.h"
 #include "Compass.h"
+#include "FocusedMarker.h"
 #include "QuestItemList.h"
 
 namespace extended
@@ -13,7 +13,6 @@ namespace extended
 	class HUDMarkerManager
 	{
 	public:
-
 		static HUDMarkerManager* GetSingleton()
 		{
 			static HUDMarkerManager singleton;
@@ -21,11 +20,11 @@ namespace extended
 			return &singleton;
 		}
 
-		void ProcessQuestMarker(RE::TESQuest* a_quest, RE::BGSInstancedQuestObjective &a_objective, RE::TESQuestTarget* a_target,
-								RE::TESObjectREFR* a_marker, std::uint32_t a_markerGotoFrame);
+		void ProcessQuestMarker(RE::TESQuest* a_quest, RE::BGSInstancedQuestObjective& a_objective, RE::TESQuestTarget* a_target,
+			RE::TESObjectREFR* a_marker, std::uint32_t a_markerGotoFrame);
 
 		void ProcessLocationMarker(RE::ExtraMapMarker* a_mapMarker, RE::TESObjectREFR* a_marker,
-								   std::uint32_t a_markerGotoFrame);
+			std::uint32_t a_markerGotoFrame);
 
 		void ProcessEnemyMarker(RE::Character* a_enemy, std::uint32_t a_markerGotoFrame);
 
@@ -34,18 +33,14 @@ namespace extended
 		void SetMarkersExtraInfo();
 
 	private:
-
 		std::shared_ptr<FocusedMarker> GetFacedMarkerUpdated(const RE::TESObjectREFR* a_marker, float a_angleToPlayerCamera)
 		{
 			std::shared_ptr<FocusedMarker> facedMarker;
 
-			if (facedMarkers.contains(a_marker))
-			{
+			if (facedMarkers.contains(a_marker)) {
 				facedMarker = facedMarkers.at(a_marker);
 				facedMarker->UpdateGeometry(a_angleToPlayerCamera);
-			}
-			else
-			{
+			} else {
 				facedMarker = std::make_shared<FocusedMarker>(a_marker, a_angleToPlayerCamera);
 				facedMarkers.emplace(a_marker, facedMarker);
 			}
@@ -56,7 +51,7 @@ namespace extended
 		bool IsFocusedMarker(const RE::TESObjectREFR* a_marker) const { return focusedMarker && a_marker == focusedMarker->ref; }
 
 		std::shared_ptr<FocusedMarker>
-		GetMostCenteredMarkerOf(const std::unordered_map<const RE::TESObjectREFR*, std::shared_ptr<FocusedMarker>>& a_facedMarkers);
+			GetMostCenteredMarkerOf(const std::unordered_map<const RE::TESObjectREFR*, std::shared_ptr<FocusedMarker>>& a_facedMarkers);
 
 		bool IsSameFocusedMarker(std::shared_ptr<FocusedMarker> a_nextFocusedMarker) const;
 

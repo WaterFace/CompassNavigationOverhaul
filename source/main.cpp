@@ -13,8 +13,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
 	const SKSE::PluginDeclaration* plugin = SKSE::PluginDeclaration::GetSingleton();
 
-	if (!logger::init(plugin->GetName()))
-	{
+	if (!logger::init(plugin->GetName())) {
 		return false;
 	}
 
@@ -26,8 +25,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
 	logger::set_level(settings::debug::logLevel, settings::debug::logLevel);
 
-	if (!SKSE::GetMessagingInterface()->RegisterListener("SKSE", SKSEMessageListener))
-	{
+	if (!SKSE::GetMessagingInterface()->RegisterListener("SKSE", SKSEMessageListener)) {
 		return false;
 	}
 

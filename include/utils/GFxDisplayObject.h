@@ -5,9 +5,8 @@
 class GFxDisplayObject : public GFxObject
 {
 public:
-
-	GFxDisplayObject(const RE::GFxValue& a_value)
-	: GFxObject{ a_value }
+	GFxDisplayObject(const RE::GFxValue& a_value) :
+		GFxObject{ a_value }
 	{
 		assert(a_value.IsDisplayObject());
 	}

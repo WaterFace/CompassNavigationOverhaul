@@ -10,7 +10,6 @@ namespace RE
 	class BGSInstancedQuestObjective
 	{
 	public:
-
 		[[nodiscard]] BSString GetDisplayTextWithReplacedTags() const
 		{
 			using func_t = void (BGSInstancedQuestObjective::*)(BSString&) const;

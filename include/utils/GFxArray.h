@@ -6,7 +6,6 @@
 class GFxArray : public RE::GFxValue
 {
 public:
-
 	static GFxArray GetFrom(RE::GFxMovieView* a_movieView, const std::string_view& a_pathToArray)
 	{
 		RE::GFxValue array;
@@ -52,10 +51,8 @@ public:
 
 	std::int32_t FindElement(const RE::GFxValue& a_value)
 	{
-		for (std::uint32_t i = 0; i < GetArraySize(); i++) 
-		{
-			if (GetElement(i) == a_value)
-			{
+		for (std::uint32_t i = 0; i < GetArraySize(); i++) {
+			if (GetElement(i) == a_value) {
 				return i;
 			}
 		}

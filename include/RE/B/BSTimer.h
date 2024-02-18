@@ -5,7 +5,6 @@ namespace RE
 	class BSTimer
 	{
 	public:
-
 		static BSTimer* GetTimeManager()
 		{
 			REL::Relocation<BSTimer*> singleton{ RELOCATION_ID(523657, 410196) };

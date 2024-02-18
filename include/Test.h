@@ -7,8 +7,7 @@ public:
 
 	static void InitSingleton(const GFxDisplayObject& a_compassShoutMeterHolder)
 	{
-		if (!singleton) 
-		{
+		if (!singleton) {
 			static Test singletonInstance{ a_compassShoutMeterHolder };
 			singleton = &singletonInstance;
 		}
@@ -21,7 +20,6 @@ public:
 	GFxDisplayObject textField2 = GetMember("TextField2");
 
 private:
-
 	Test(const GFxDisplayObject& a_test) :
 		GFxDisplayObject{ a_test }
 	{}

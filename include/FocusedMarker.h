@@ -15,13 +15,13 @@ struct FocusedMarker
 		virtual ~Data() = default;
 
 		std::uint32_t gfxIndex;
-		std::uint32_t gfxGotoFrame;		
+		std::uint32_t gfxGotoFrame;
 	};
 
 	struct QuestData : Data
 	{
 		QuestData(std::uint32_t a_gfxIndex, std::uint32_t a_gfxGotoFrame, RE::TESObjectREFR* a_markerRef,
-				  const RE::TESQuest* a_quest);
+			const RE::TESQuest* a_quest);
 
 		std::string GetQuestName(const RE::TESQuest* a_quest) const
 		{
@@ -34,10 +34,9 @@ struct FocusedMarker
 
 		const std::string& GetTargetText() const
 		{
-			if (settings::display::showObjectiveAsTarget)
-			{
+			if (settings::display::showObjectiveAsTarget) {
 				if (objectives.size() == 1) {
-				return objectives.back();
+					return objectives.back();
 				} else {
 					static std::string markerText;
 					markerText.clear();
@@ -49,9 +48,7 @@ struct FocusedMarker
 					}
 					return markerText;
 				}
-			}
-			else
-			{
+			} else {
 				return locationName.empty() ? characterName : locationName;
 			}
 		}

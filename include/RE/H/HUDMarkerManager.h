@@ -8,7 +8,6 @@ namespace RE
 	class HUDMarker
 	{
 	public:
-
 		struct FrameOffsets
 		{
 			static FrameOffsets* GetSingleton()
@@ -40,8 +39,9 @@ namespace RE
 			auto frameOffsets = FrameOffsets::GetSingleton();
 
 			std::uint32_t locationFrameOffset = (a_mapMarker.flags & MapMarkerData::Flag::kCanTravelTo) ?
-									frameOffsets->location : frameOffsets->undiscoveredLocation;
-			
+													frameOffsets->location :
+													frameOffsets->undiscoveredLocation;
+
 			return locationFrameOffset + a_mapMarker.type.underlying() - 1;
 		}
 
@@ -56,7 +56,6 @@ namespace RE
 	class HUDMarkerManager
 	{
 	public:
-
 		static HUDMarkerManager* GetSingleton()
 		{
 			REL::Relocation<HUDMarkerManager*> singleton{ RELOCATION_ID(519611, 406154) };

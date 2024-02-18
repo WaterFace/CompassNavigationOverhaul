@@ -6,7 +6,6 @@
 class GFxObject : public RE::GFxValue
 {
 public:
-
 	static GFxObject GetFrom(RE::GFxMovieView* a_movieView, const std::string_view& a_pathToObject)
 	{
 		RE::GFxValue object;
@@ -79,6 +78,6 @@ public:
 		std::array<RE::GFxValue, sizeof...(Args)> gfxArgs{ std::forward<Args>(args)... };
 
 		return RE::GFxValue::Invoke(a_functionName.data(), a_result,
-									sizeof...(Args) ? &gfxArgs[0] : nullptr, sizeof...(Args));
+			sizeof...(Args) ? &gfxArgs[0] : nullptr, sizeof...(Args));
 	}
 };

@@ -14,8 +14,8 @@
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <ctime>
 #include <cuchar>
@@ -46,8 +46,8 @@
 #include <future>
 #include <initializer_list>
 #include <iomanip>
-#include <iosfwd>
 #include <ios>
+#include <iosfwd>
 #include <iostream>
 #include <istream>
 #include <iterator>
@@ -66,8 +66,8 @@
 #include <queue>
 #include <random>
 #include <ranges>
-#include <regex>
 #include <ratio>
+#include <regex>
 #include <scoped_allocator>
 #include <semaphore>
 #include <set>
@@ -84,9 +84,9 @@
 #include <system_error>
 #include <thread>
 #include <tuple>
+#include <type_traits>
 #include <typeindex>
 #include <typeinfo>
-#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -96,12 +96,12 @@
 #include <version>
 
 #include <RE/Skyrim.h>
-#include <SKSE/SKSE.h>
 #include <REL/Relocation.h>
+#include <SKSE/SKSE.h>
 
+#include <Psapi.h>
 #include <ShlObj_core.h>
 #include <Windows.h>
-#include <Psapi.h>
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>

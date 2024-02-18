@@ -19,44 +19,34 @@ namespace extended
 	{
 		float angleToPlayerCamera = GetAngleBetween(playerCamera, a_marker);
 
-		if ((IsFocusedMarker(a_marker) && angleToPlayerCamera < keepFocusedAngle) || 
-			angleToPlayerCamera < facingAngle)
-		{
+		if ((IsFocusedMarker(a_marker) && angleToPlayerCamera < keepFocusedAngle) ||
+			angleToPlayerCamera < facingAngle) {
 			std::shared_ptr<FocusedMarker> facedMarker = GetFacedMarkerUpdated(a_marker, angleToPlayerCamera);
 
 			// For this marker, find the data for this quest
 			auto dataFound = std::ranges::find_if(facedMarker->data,
-				[a_quest](std::shared_ptr<FocusedMarker::Data> a_data) -> bool
-				{
+				[a_quest](std::shared_ptr<FocusedMarker::Data> a_data) -> bool {
 					auto questData = std::dynamic_pointer_cast<FocusedMarker::QuestData>(a_data);
 
 					// Group miscellaneous quests as a single quest, like in the journal
-					if (questData->type == RE::QUEST_DATA::Type::kMiscellaneous)
-					{
+					if (questData->type == RE::QUEST_DATA::Type::kMiscellaneous) {
 						return a_quest->GetType() == RE::QUEST_DATA::Type::kMiscellaneous;
-					}
-					else
-					{
+					} else {
 						return questData->quest == a_quest;
 					}
 				});
 
 			// Get if found, create if not
 			std::shared_ptr<FocusedMarker::QuestData> questData;
-			if (dataFound != facedMarker->data.end())
-			{
+			if (dataFound != facedMarker->data.end()) {
 				questData = std::dynamic_pointer_cast<FocusedMarker::QuestData>(*dataFound);
 				questData->gfxIndex = hudMarkerManager->currentMarkerIndex - 1;
-			}
-			else
-			{
-				questData = std::make_shared<FocusedMarker::QuestData>
-				(
+			} else {
+				questData = std::make_shared<FocusedMarker::QuestData>(
 					hudMarkerManager->currentMarkerIndex - 1,
 					a_markerGotoFrame,
 					a_marker,
-					a_quest
-				);
+					a_quest);
 				facedMarker->data.push_back(questData);
 			}
 
@@ -70,8 +60,8 @@ namespace extended
 					if (a_target == instancedObjective.objective->targets[j]) {
 						objectiveHasTarget = true;
 						break;
-			}
-		}
+					}
+				}
 
 				if (instancedObjective.objective->ownerQuest == a_quest &&
 					instancedObjective.instanceState == RE::QUEST_OBJECTIVE_STATE::kDisplayed && objectiveHasTarget) {
@@ -83,7 +73,7 @@ namespace extended
 
 						questData->addedInstancedObjectives.push_back(&instancedObjective);
 						questData->objectives.push_back(instancedObjective.GetDisplayTextWithReplacedTags().c_str());
-	}
+					}
 				}
 			}
 			if (questData->addedInstancedObjectives.empty()) {
@@ -93,33 +83,28 @@ namespace extended
 	}
 
 	void HUDMarkerManager::ProcessLocationMarker(RE::ExtraMapMarker* a_mapMarker, RE::TESObjectREFR* a_marker,
-												 std::uint32_t a_markerGotoFrame)
+		std::uint32_t a_markerGotoFrame)
 	{
 		float angleToPlayerCamera = GetAngleBetween(playerCamera, a_marker);
 
 		bool isDiscoveredLocation = a_mapMarker->mapData->flags.all(RE::MapMarkerData::Flag::kVisible);
 
-		if (isDiscoveredLocation || !settings::display::undiscoveredMeansUnknownInfo)
-		{
+		if (isDiscoveredLocation || !settings::display::undiscoveredMeansUnknownInfo) {
 			if ((IsFocusedMarker(a_marker) && angleToPlayerCamera < keepFocusedAngle) ||
-				angleToPlayerCamera < facingAngle)
-			{
+				angleToPlayerCamera < facingAngle) {
 				std::shared_ptr<FocusedMarker> facedMarker = GetFacedMarkerUpdated(a_marker, angleToPlayerCamera);
 
 				// Add the location data for this marker
-				auto locationData = std::make_shared<FocusedMarker::LocationData>
-				(
+				auto locationData = std::make_shared<FocusedMarker::LocationData>(
 					hudMarkerManager->currentMarkerIndex - 1,
 					a_markerGotoFrame,
-					a_mapMarker->mapData
-				);
+					a_mapMarker->mapData);
 
 				facedMarker->data.push_back(locationData);
 			}
 		}
 
-		if (!isDiscoveredLocation && settings::display::undiscoveredMeansUnknownMarkers)
-		{
+		if (!isDiscoveredLocation && settings::display::undiscoveredMeansUnknownMarkers) {
 			hudMarkerManager->scaleformMarkerData[hudMarkerManager->currentMarkerIndex - 1].type.SetNumber(131);
 		}
 	}
@@ -129,17 +114,14 @@ namespace extended
 		float angleToPlayerCamera = GetAngleBetween(playerCamera, a_enemy);
 
 		if ((IsFocusedMarker(a_enemy) && angleToPlayerCamera < keepFocusedAngle) ||
-			angleToPlayerCamera < facingAngle)
-		{
+			angleToPlayerCamera < facingAngle) {
 			std::shared_ptr<FocusedMarker> facedMarker = GetFacedMarkerUpdated(a_enemy, angleToPlayerCamera);
 
 			// Add the enemy data for this marker
-			auto enemyData = std::make_shared<FocusedMarker::EnemyData>
-			(
+			auto enemyData = std::make_shared<FocusedMarker::EnemyData>(
 				hudMarkerManager->currentMarkerIndex - 1,
 				a_markerGotoFrame,
-				a_enemy
-			);
+				a_enemy);
 
 			facedMarker->data.push_back(enemyData);
 		}
@@ -150,16 +132,13 @@ namespace extended
 		float angleToPlayerCamera = GetAngleBetween(playerCamera, a_marker);
 
 		if ((IsFocusedMarker(a_marker) && angleToPlayerCamera < keepFocusedAngle) ||
-			angleToPlayerCamera < facingAngle)
-		{
+			angleToPlayerCamera < facingAngle) {
 			std::shared_ptr<FocusedMarker> facedMarker = GetFacedMarkerUpdated(a_marker, angleToPlayerCamera);
 
 			// Add the player set data for this marker
-			auto playerSetData = std::make_shared<FocusedMarker::PlayerSetData>
-			(
+			auto playerSetData = std::make_shared<FocusedMarker::PlayerSetData>(
 				hudMarkerManager->currentMarkerIndex - 1,
-				a_markerGotoFrame
-			);
+				a_markerGotoFrame);
 
 			facedMarker->data.push_back(playerSetData);
 		}
@@ -175,8 +154,7 @@ namespace extended
 
 		focusedMarker = nextFocusedMarker;
 
-		if (focusChanged)
-		{
+		if (focusChanged) {
 			timeFocusingMarker = 0.0F;
 
 			compass->UnfocusMarker();
@@ -187,20 +165,16 @@ namespace extended
 				questItemList->RemoveAllQuests();
 		}
 
-		if (focusedMarker)
-		{
+		if (focusedMarker) {
 			bool canFocusPlayerSetMarker = true;
 			uint32_t gfxIndex = 0;
 
-			if (focusedMarker->data.empty())
-			{
+			if (focusedMarker->data.empty()) {
 				logger::trace("");
 			}
 
-			for (std::shared_ptr<FocusedMarker::Data> focusedMarkerData : focusedMarker->data)
-			{
-				if (auto questData = std::dynamic_pointer_cast<FocusedMarker::QuestData>(focusedMarkerData))
-				{
+			for (std::shared_ptr<FocusedMarker::Data> focusedMarkerData : focusedMarker->data) {
+				if (auto questData = std::dynamic_pointer_cast<FocusedMarker::QuestData>(focusedMarkerData)) {
 					canFocusPlayerSetMarker = false;
 
 					compass->SetFocusedMarkerInfo(questData->GetTargetText(), focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
@@ -250,22 +224,19 @@ namespace extended
 			}
 		}
 
-		if (questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell()))
-		{
+		if (questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell())) {
 			questItemList->Update();
 		}
 	}
 
-	std::shared_ptr<FocusedMarker> 
-	HUDMarkerManager::GetMostCenteredMarkerOf(const std::unordered_map<const RE::TESObjectREFR*, std::shared_ptr<FocusedMarker>>& a_facedMarkers)
+	std::shared_ptr<FocusedMarker>
+		HUDMarkerManager::GetMostCenteredMarkerOf(const std::unordered_map<const RE::TESObjectREFR*, std::shared_ptr<FocusedMarker>>& a_facedMarkers)
 	{
 		float closestAngleToPlayerCamera = std::numeric_limits<float>::max();
 		std::shared_ptr<FocusedMarker> mostCenteredMarker = nullptr;
 
-		for (const auto& [markerRef, facedMarker] : a_facedMarkers)
-		{
-			if (facedMarker->angleToPlayerCamera < closestAngleToPlayerCamera)
-			{
+		for (const auto& [markerRef, facedMarker] : a_facedMarkers) {
+			if (facedMarker->angleToPlayerCamera < closestAngleToPlayerCamera) {
 				mostCenteredMarker = facedMarker;
 				closestAngleToPlayerCamera = facedMarker->angleToPlayerCamera;
 			}
@@ -276,14 +247,10 @@ namespace extended
 
 	bool HUDMarkerManager::IsSameFocusedMarker(std::shared_ptr<FocusedMarker> a_nextFocusedMarker) const
 	{
-		if ((focusedMarker && !a_nextFocusedMarker) || (!focusedMarker && a_nextFocusedMarker))
-		{
+		if ((focusedMarker && !a_nextFocusedMarker) || (!focusedMarker && a_nextFocusedMarker)) {
 			return false;
-		}
-		else if (focusedMarker && a_nextFocusedMarker)
-		{
-			if (focusedMarker->ref != a_nextFocusedMarker->ref)
-			{
+		} else if (focusedMarker && a_nextFocusedMarker) {
+			if (focusedMarker->ref != a_nextFocusedMarker->ref) {
 				return false;
 			}
 		}
@@ -304,23 +271,18 @@ namespace extended
 
 	bool HUDMarkerManager::IsPlayerAllyOfFaction(const RE::TESFaction* a_faction) const
 	{
-		if (player->IsInFaction(a_faction)) 
-		{
+		if (player->IsInFaction(a_faction)) {
 			return true;
 		}
 
-		return player->VisitFactions([a_faction](RE::TESFaction* a_visitedFaction, std::int8_t a_rank) -> bool
-		{
-			if (a_visitedFaction == a_faction && a_rank > 0)
-			{
+		return player->VisitFactions([a_faction](RE::TESFaction* a_visitedFaction, std::int8_t a_rank) -> bool {
+			if (a_visitedFaction == a_faction && a_rank > 0) {
 				return true;
 			}
 
-			for (RE::GROUP_REACTION* reactionToFaction : a_visitedFaction->reactions)
-			{
+			for (RE::GROUP_REACTION* reactionToFaction : a_visitedFaction->reactions) {
 				auto relatedFaction = reactionToFaction->form->As<RE::TESFaction>();
-				if (relatedFaction == a_faction && reactionToFaction->fightReaction >= RE::FIGHT_REACTION::kAlly)
-				{
+				if (relatedFaction == a_faction && reactionToFaction->fightReaction >= RE::FIGHT_REACTION::kAlly) {
 					return true;
 				}
 			}
@@ -331,18 +293,14 @@ namespace extended
 
 	bool HUDMarkerManager::IsPlayerOpponentOfFaction(const RE::TESFaction* a_faction) const
 	{
-		return player->VisitFactions([a_faction](RE::TESFaction* a_visitedFaction, std::int8_t a_rank) -> bool
-		{
-			if (a_visitedFaction == a_faction && a_rank < 0)
-			{
+		return player->VisitFactions([a_faction](RE::TESFaction* a_visitedFaction, std::int8_t a_rank) -> bool {
+			if (a_visitedFaction == a_faction && a_rank < 0) {
 				return true;
 			}
 
-			for (RE::GROUP_REACTION* reactionToFaction : a_visitedFaction->reactions)
-			{
+			for (RE::GROUP_REACTION* reactionToFaction : a_visitedFaction->reactions) {
 				auto relatedFaction = reactionToFaction->form->As<RE::TESFaction>();
-				if (relatedFaction == a_faction && reactionToFaction->fightReaction == RE::FIGHT_REACTION::kEnemy)
-				{
+				if (relatedFaction == a_faction && reactionToFaction->fightReaction == RE::FIGHT_REACTION::kEnemy) {
 					return true;
 				}
 			}
@@ -353,32 +311,25 @@ namespace extended
 
 	std::string HUDMarkerManager::GetSideInQuest(RE::QUEST_DATA::Type a_questType) const
 	{
-		switch (a_questType)
-		{
+		switch (a_questType) {
 		case RE::QUEST_DATA::Type::kCivilWar:
-			if (IsPlayerAllyOfFaction(sonsOfSkyrimFaction) || 
+			if (IsPlayerAllyOfFaction(sonsOfSkyrimFaction) ||
 				IsPlayerAllyOfFaction(stormCloaksFaction) ||
-				IsPlayerOpponentOfFaction(imperialLegionFaction))
-			{
+				IsPlayerOpponentOfFaction(imperialLegionFaction)) {
 				return "StormCloaks";
-			}
-			else
-			{
+			} else {
 				return "ImperialLegion";
 			}
 		case RE::QUEST_DATA::Type::kDLC01_Vampire:
-			if (player->HasKeywordString("Vampire") || 
+			if (player->HasKeywordString("Vampire") ||
 				IsPlayerAllyOfFaction(vampireFaction) ||
-				IsPlayerOpponentOfFaction(dawnGuardFaction))
-			{
+				IsPlayerOpponentOfFaction(dawnGuardFaction)) {
 				return "Vampires";
-			}
-			else
-			{
-				return "Dawnguard"; 
+			} else {
+				return "Dawnguard";
 			}
 		}
 
-		return { };
+		return {};
 	}
 }

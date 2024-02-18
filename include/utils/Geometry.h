@@ -8,15 +8,11 @@ namespace util
 
 	constexpr void CropAngleRange(float& a_angle)
 	{
-		if (a_angle <= 2 * pi)
-		{
-			if (a_angle < 0.0F)
-			{
+		if (a_angle <= 2 * pi) {
+			if (a_angle < 0.0F) {
 				a_angle = std::fmodf(a_angle, 2 * pi) + 2 * pi;
 			}
-		}
-		else
-		{
+		} else {
 			a_angle = std::fmodf(a_angle, 2 * pi);
 		}
 	};
@@ -40,8 +36,7 @@ namespace util
 
 		float compassAngle = playerCameraYawAngle;
 
-		if (RE::TESObjectCELL* parentCell = player->GetParentCell())
-		{
+		if (RE::TESObjectCELL* parentCell = player->GetParentCell()) {
 			compassAngle += parentCell->GetNorthRotation();
 		}
 
@@ -63,7 +58,7 @@ namespace util
 		auto worldSpaceOffset = RE::NiPoint3{ a_worldspace->worldMapOffsetData.mapOffsetX,
 			a_worldspace->worldMapOffsetData.mapOffsetY,
 			a_worldspace->worldMapOffsetData.mapOffsetZ } *
-							a_worldspace->worldMapOffsetData.mapScale;
+								a_worldspace->worldMapOffsetData.mapScale;
 
 		return a_ref->GetPosition() + worldSpaceOffset;
 	}
