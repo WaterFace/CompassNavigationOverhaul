@@ -104,8 +104,10 @@ namespace extended
 			}
 		}
 
+		// 0 is used as the sentinel value for an unknown compass marker in the most up-to-date
+		// swf at time of writing
 		if (!isDiscoveredLocation && settings::display::undiscoveredMeansUnknownMarkers) {
-			hudMarkerManager->scaleformMarkerData[hudMarkerManager->currentMarkerIndex - 1].type.SetNumber(131);
+			hudMarkerManager->scaleformMarkerData[hudMarkerManager->currentMarkerIndex - 1].type.SetNumber(0);
 		}
 	}
 
@@ -203,7 +205,7 @@ namespace extended
 		}
 
 		// Set smaller the size of non-focused markers
-		compass->SetMarkersSize();
+		compass->SetMarkers();
 
 		if (focusedMarker && (!settings::questlist::hideInCombat || !player->AsActorState()->IsWeaponDrawn())) {
 			timeFocusingMarker += timeManager->realTimeDelta;
