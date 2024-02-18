@@ -52,9 +52,9 @@ namespace extended
 			Invoke("UpdateFocusedMarker");
 		}
 
-		void SetMarkersSize()
+		void SetMarkers()
 		{
-			Invoke("SetMarkersSize");
+			Invoke("SetMarkers");
 		}
 
 	private:
