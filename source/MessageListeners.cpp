@@ -30,25 +30,27 @@ void InfinityUIMessageListener(SKSE::MessagingInterface::Message* a_msg)
 	}
 
 	if (auto message = IUI::API::TranslateAs<IUI::API::Message>(a_msg)) {
-		if (message->contextMovieUrl.find("HUDMenu") == std::string::npos) {
+		std::string_view movieUrl = message->movie->GetMovieDef()->GetFileURL();
+
+		if (movieUrl.find("HUDMenu") == std::string::npos) {
 			return;
 		}
 
 		GFxMemberLogger<logger::level::debug> memberLogger;
 
 		switch (a_msg->type) {
-		case IUI::API::Message::Type::kStartLoad:
+		case IUI::API::Message::Type::kStartLoadInstances:
 			{
 				logger::info("Started loading patches");
 				break;
 			}
-		case IUI::API::Message::Type::kPreReplace:
+		case IUI::API::Message::Type::kPreReplaceInstance:
 			{
-				if (auto preReplaceMessage = IUI::API::TranslateAs<IUI::API::PreReplaceMessage>(a_msg)) {
-					std::string pathToOriginal = preReplaceMessage->originalDisplayObject.ToString().c_str();
+				if (auto preReplaceMessage = IUI::API::TranslateAs<IUI::API::PreReplaceInstanceMessage>(a_msg)) {
+					std::string pathToOriginal = preReplaceMessage->originalInstance.ToString().c_str();
 
 					if (pathToOriginal == extended::Compass::path) {
-						extended::Compass::InitSingleton(preReplaceMessage->originalDisplayObject);
+						extended::Compass::InitSingleton(preReplaceMessage->originalInstance);
 						auto compass = extended::Compass::GetSingleton();
 
 						logger::debug("");
@@ -62,16 +64,16 @@ void InfinityUIMessageListener(SKSE::MessagingInterface::Message* a_msg)
 				}
 				break;
 			}
-		case IUI::API::Message::Type::kPostPatch:
+		case IUI::API::Message::Type::kPostPatchInstance:
 			{
-				if (auto postPatchMessage = IUI::API::TranslateAs<IUI::API::PostPatchMessage>(a_msg)) {
-					std::string pathToNew = postPatchMessage->newDisplayObject.ToString().c_str();
+				if (auto postPatchMessage = IUI::API::TranslateAs<IUI::API::PostPatchInstanceMessage>(a_msg)) {
+					std::string pathToNew = postPatchMessage->newInstance.ToString().c_str();
 
 					if (pathToNew == extended::Compass::path) {
 						// We initialised the CompassShoutMeterHolder singleton in the pre-replace step,
 						// if not, there has been an error
 						if (auto compass = extended::Compass::GetSingleton()) {
-							compass->SetupMod(postPatchMessage->newDisplayObject);
+							compass->SetupMod(postPatchMessage->newInstance);
 							compass->SetUnits(settings::display::useMetricUnits);
 
 							logger::debug("");
@@ -85,7 +87,7 @@ void InfinityUIMessageListener(SKSE::MessagingInterface::Message* a_msg)
 							logger::error("Compass instance counterpart not ready for {}", extended::Compass::path);
 						}
 					} else if (pathToNew == QuestItemList::path) {
-						QuestItemList::InitSingleton(postPatchMessage->newDisplayObject);
+						QuestItemList::InitSingleton(postPatchMessage->newInstance);
 						auto questItemList = QuestItemList::GetSingleton();
 
 						logger::debug("");
@@ -99,9 +101,9 @@ void InfinityUIMessageListener(SKSE::MessagingInterface::Message* a_msg)
 				}
 				break;
 			}
-		case IUI::API::Message::Type::kAbortPatch:
+		case IUI::API::Message::Type::kAbortPatchInstance:
 			{
-				if (auto abortPatchMessage = IUI::API::TranslateAs<IUI::API::AbortPatchMessage>(a_msg)) {
+				if (auto abortPatchMessage = IUI::API::TranslateAs<IUI::API::AbortPatchInstanceMessage>(a_msg)) {
 					std::string pathToOriginal = abortPatchMessage->originalValue.ToString().c_str();
 
 					if (pathToOriginal == extended::Compass::path) {
@@ -110,14 +112,9 @@ void InfinityUIMessageListener(SKSE::MessagingInterface::Message* a_msg)
 				}
 				break;
 			}
-		case IUI::API::Message::Type::kFinishLoad:
+		case IUI::API::Message::Type::kFinishLoadInstances:
 			{
-				if (auto finishLoadMessage = IUI::API::TranslateAs<IUI::API::FinishLoadMessage>(a_msg)) {
-					RE::GFxValue test;
-					if (finishLoadMessage->contextMovieView->GetVariable(&test, Test::path.data())) {
-						Test::InitSingleton(test);
-					}
-				}
+				auto finishLoadMessage = IUI::API::TranslateAs<IUI::API::FinishLoadInstancesMessage>(a_msg);
 				logger::info("Finished loading patches");
 				break;
 			}
