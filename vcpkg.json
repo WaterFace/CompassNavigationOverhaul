@@ -1,8 +1,8 @@
 {
     "name": "compassnavigationoverhaul",
-    "version-string": "1.1.0",
+    "version-string": "1.2.0",
     "description": "",
-    "homepage": "https://github.com/alexsylex/CompassNavigationOverhaul",
+    "homepage": "https://github.com/WaterFace/CompassNavigationOverhaul",
     "license": "MIT",
     "dependencies": [
         "boost-atomic",
