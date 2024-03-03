@@ -144,7 +144,10 @@ namespace hooks
 
 		// HUDMenu::ProcessMessage call to HUDMarkerManager::AddMarker(...) for enemies
 		{
-			static std::uintptr_t hookedAddress = HUDMenu::ProcessMessage.address() + (REL::Module::IsSE() ? 0x15AB : 0x1695);
+			// Offset changed from 1.6.640 -> 1.6.1130, so we gotta be more granular with the versions
+			static REL::Version version = REL::Module::get().version();
+			static std::uintptr_t offset = (version < SKSE::RUNTIME_SSE_1_6_640 ? 0x15AB : (version < SKSE::RUNTIME_SSE_1_6_1130 ? 0x1695 : 0x1735));
+			static std::uintptr_t hookedAddress = HUDMenu::ProcessMessage.address() + offset;
 
 			struct HookCodeGenerator : Xbyak::CodeGenerator
 			{
@@ -162,8 +165,9 @@ namespace hooks
 				}
 			};
 
-			// utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator());
+			utils::WriteBranchTrampoline<5>(hookedAddress, HookCodeGenerator());
 		}
+
 
 		// Compass::SetMarkers call to HUDMarkerManager::AddMarker(...) for Player-set marker
 		{
