@@ -176,22 +176,23 @@ namespace extended
 			}
 
 			for (std::shared_ptr<FocusedMarker::Data> focusedMarkerData : focusedMarker->data) {
+				auto markerIndex = focusedMarkerData->gfxIndex;
 				if (auto questData = std::dynamic_pointer_cast<FocusedMarker::QuestData>(focusedMarkerData)) {
 					canFocusPlayerSetMarker = false;
 
-					compass->SetFocusedMarkerInfo(questData->GetTargetText(), focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+					compass->SetFocusedMarkerInfo(questData->GetTargetText(), focusedMarker->distanceToPlayer, focusedMarker->heightDifference, markerIndex);
 
 					if (focusChanged && questItemList && questItemList->CanBeDisplayedIn(player->GetParentCell())) {
 						questItemList->AddQuest(questData->type, questData->name, questData->isInSameLocation, questData->objectives, questData->ageIndex);
 						questItemList->SetQuestSide(GetSideInQuest(questData->type));
 					}
 				} else if (auto locationData = std::dynamic_pointer_cast<FocusedMarker::LocationData>(focusedMarkerData)) {
-					compass->SetFocusedMarkerInfo(locationData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+					compass->SetFocusedMarkerInfo(locationData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference, markerIndex);
 				} else if (auto enemyData = std::dynamic_pointer_cast<FocusedMarker::EnemyData>(focusedMarkerData)) {
-					compass->SetFocusedMarkerInfo(enemyData->enemyName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+					compass->SetFocusedMarkerInfo(enemyData->enemyName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference, markerIndex);
 				} else if (auto playerSetData = std::dynamic_pointer_cast<FocusedMarker::PlayerSetData>(focusedMarkerData)) {
 					if (canFocusPlayerSetMarker) {
-						compass->SetFocusedMarkerInfo(playerSetData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference);
+						compass->SetFocusedMarkerInfo(playerSetData->locationName, focusedMarker->distanceToPlayer, focusedMarker->heightDifference, markerIndex);
 					}
 				}
 

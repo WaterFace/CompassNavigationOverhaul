@@ -32,9 +32,9 @@ namespace extended
 			Invoke("SetUnits", a_useMetric);
 		}
 
-		void SetFocusedMarkerInfo(const std::string& a_target, float a_distance, float a_heightDifference)
+		void SetFocusedMarkerInfo(const std::string& a_target, float a_distance, float a_heightDifference, uint32_t a_markerIndex)
 		{
-			Invoke("SetFocusedMarkerInfo", a_target.c_str(), a_distance, a_heightDifference);
+			Invoke("SetFocusedMarkerInfo", a_target.c_str(), a_distance, a_heightDifference, a_markerIndex);
 		}
 
 		void FocusMarker(std::uint32_t a_markerIndex)
