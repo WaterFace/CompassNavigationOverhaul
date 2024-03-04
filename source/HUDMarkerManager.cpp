@@ -202,6 +202,26 @@ namespace extended
 			if (focusChanged) {
 				compass->FocusMarker(gfxIndex);
 			} else {
+				// HACK: properly support hiding enemy healthbar with TrueHUD or IHUD
+				// Ideally I would redistribute a modified version of the swf but this is
+				// unfortunately better for compatibility and license reasons
+
+				// Explanation: TrueHUD is commonly used to hide the vanilla enemy healthbar
+				// and the way it does so is by setting the `HUDMovieBaseInstance.EnemyHealth_mc._alpha` field to 0
+				// however the CNO .swf instead checks `HUDMenu.EnemyHealth_mc.BracketsInstance._alpha`, so
+				// it behaves as if the enemy health bar is enabled even when it's disabled by TrueHUD or IHUD
+
+				// This solution is not ideal but it should work
+
+				auto hudPtr = RE::UI::GetSingleton()->GetMenu(RE::HUDMenu::MENU_NAME);
+				if (hudPtr) {
+					auto hud = hudPtr.get();
+					if (hud && hud->uiMovie) {
+						RE::GFxValue enemyHealthAlpha;
+						hud->uiMovie->GetVariable(&enemyHealthAlpha, "HUDMovieBaseInstance.EnemyHealth_mc._alpha");
+						hud->uiMovie->SetVariable("HUDMovieBaseInstance.EnemyHealth_mc.BracketsInstance._alpha", enemyHealthAlpha);
+					}
+				}
 				compass->UpdateFocusedMarker();
 			}
 		}
