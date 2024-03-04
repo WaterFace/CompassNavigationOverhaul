@@ -201,8 +201,9 @@ namespace extended
 
 			if (focusChanged) {
 				compass->FocusMarker(gfxIndex);
+			} else {
+				compass->UpdateFocusedMarker();
 			}
-			compass->UpdateMarker();
 		}
 
 		// Set smaller the size of non-focused markers

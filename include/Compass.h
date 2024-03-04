@@ -47,7 +47,7 @@ namespace extended
 			Invoke("UnfocusMarker");
 		}
 
-		void UpdateMarker()
+		void UpdateFocusedMarker()
 		{
 			Invoke("UpdateFocusedMarker");
 		}
