@@ -86,18 +86,27 @@ struct FocusedMarker
 		EnemyData(std::uint32_t a_gfxIndex, std::uint32_t a_gfxGotoFrame, const RE::Character* a_enemy) :
 			Data{ a_gfxIndex, a_gfxGotoFrame }, enemy{ a_enemy }
 		{
-			auto xTextData = enemy->extraList.GetByType<RE::ExtraTextDisplayData>();
-			if (xTextData) {
-				enemyName = xTextData->displayName;
-			} else {
-				enemyName = enemy->GetName();
-			}
+			enemyName = GetDisplayName(enemy);
 		}
 
 		const RE::Character* enemy;
 
 		// cache
 		std::string enemyName;
+
+		static std::string GetDisplayName(const RE::Character* a_character)
+		{
+			if (!a_character) {
+				return "";
+			}
+
+			auto xTextData = a_character->extraList.GetByType<RE::ExtraTextDisplayData>();
+			if (xTextData) {
+				return xTextData->displayName.c_str();
+			} else {
+				return a_character->GetName();
+			}
+		}
 	};
 
 	struct PlayerSetData : Data
