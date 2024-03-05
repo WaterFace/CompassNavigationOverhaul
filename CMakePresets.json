@@ -9,6 +9,7 @@
         {
             "name": "base",
             "hidden": true,
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_CXX_FLAGS": "$env{COMMONLIBSSE_COMPILER} $env{COMMONLIBSSE_PLATFORM} $env{COMMONLIBSSE_TEXT}"
             }
@@ -21,6 +22,7 @@
                 "VCPKG_TARGET_TRIPLET": "x64-windows-skse",
                 "VCPKG_HOST_TRIPLET": "x64-windows-skse",
                 "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake",
+                "VCPKG_OVERLAY_PORTS": "${sourceDir}/cmake/ports",
                 "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
             }
         },
@@ -72,7 +74,6 @@
             ],
             "displayName": "Debug",
             "description": "Debug build for testing.",
-            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/debug-msvc",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": {
@@ -92,7 +93,6 @@
             ],
             "displayName": "Release",
             "description": "Optimized release build.",
-            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/release-msvc",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": {
@@ -112,7 +112,6 @@
             ],
             "displayName": "RelWithDebInfo",
             "description": "Optimized release build, but with info for testing.",
-            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/release-with-debug-info-msvc",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": {
