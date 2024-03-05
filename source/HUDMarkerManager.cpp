@@ -213,16 +213,19 @@ namespace extended
 
 				// This solution is not ideal but it should work
 
-				auto hudPtr = RE::UI::GetSingleton()->GetMenu(RE::HUDMenu::MENU_NAME);
+				auto hudPtr = RE::UI::GetSingleton()->GetMenu<RE::HUDMenu>(RE::HUDMenu::MENU_NAME);
 				if (hudPtr) {
 					auto hud = hudPtr.get();
 					if (hud && hud->uiMovie) {
 						RE::GFxValue enemyHealthAlpha;
 						hud->uiMovie->GetVariable(&enemyHealthAlpha, "HUDMovieBaseInstance.EnemyHealth_mc._alpha");
-						hud->uiMovie->SetVariable("HUDMovieBaseInstance.EnemyHealth_mc.BracketsInstance._alpha", enemyHealthAlpha);
+						if (enemyHealthAlpha.GetNumber() <= 0.0) {
+							hud->uiMovie->SetVariable("HUDMovieBaseInstance.EnemyHealth_mc.BracketsInstance._alpha", enemyHealthAlpha);
+						}
+
+						compass->UpdateFocusedMarker();
 					}
 				}
-				compass->UpdateFocusedMarker();
 			}
 		}
 
