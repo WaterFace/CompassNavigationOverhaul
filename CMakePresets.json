@@ -125,6 +125,7 @@
         {
             "name": "release-msvc",
             "displayName": "Release (MSVC)",
+            "configuration": "Release",
             "configurePreset": "build-release-msvc",
             "description": "Optimized release build."
         },
@@ -137,6 +138,7 @@
         {
             "name": "release-with-debug-info-msvc",
             "displayName": "RelWithDebInfo (MSVC)",
+            "configuration": "RelWithDebInfo",
             "configurePreset": "build-release-with-debug-info-msvc",
             "description": "Optimized release build, but with info for testing."
         }
